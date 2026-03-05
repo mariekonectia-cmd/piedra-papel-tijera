@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Piedra Papel o Tijera</title>
+    <style>
+    /* 1. Fondo llamativo estilo Bingo de Las Vegas */
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        /* Un gradiente radial que simula las luces de un casino */
+        background: radial-gradient(circle, #2d3475 0%, #10102b 100%);
+        color: white; /* Texto blanco para que resalte */
+        padding-top: 50px;
+        min-height: 100vh; /* Asegura que el fondo cubra toda la pantalla */
+        margin: 0;
+    }
+
+    h1 {
+        font-size: 3rem;
+        text-transform: uppercase;
+        color: #fff;
+        /* Un efecto de neón sutil para el título */
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #ddd;
+        margin-bottom: 40px;
+    }
+
+    /* 2. Contenedor de botones centrado */
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap; /* Para que se ajusten en pantallas pequeñas */
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* 3. Estilo base de los botones "Piedra, Papel, Tijera" */
+    .btn { 
+        padding: 20px 40px; 
+        font-size: 24px; 
+        cursor: pointer; 
+        border-radius: 50px; /* Bordes muy redondeados */
+        border: 4px solid #fff; /* Borde blanco grueso */
+        background: #1a1a1a; /* Fondo oscuro por defecto */
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: all 0.2s ease; /* Transición suave para el hover */
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Sombra inicial */
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 4. Colores específicos para cada botón (efecto neón) */
+    .btn-piedra { 
+        border-color: #ff0055; 
+        color: #ff0055;
+        text-shadow: 0 0 5px #ff0055;
+    }
+    .btn-papel { 
+        border-color: #00ebff; 
+        color: #00ebff;
+        text-shadow: 0 0 5px #00ebff;
+    }
+    .btn-tijera { 
+        border-color: #ffdd00; 
+        color: #ffdd00;
+        text-shadow: 0 0 5px #ffdd00;
+    }
+
+    /* 5. Efecto Hover (al pasar el mouse) */
+    .btn:hover { 
+        transform: scale(1.1) translateY(-5px); /* Se agranda y sube un poco */
+        background: white; /* El fondo se vuelve blanco */
+    }
+    /* Colores de texto en hover */
+    .btn-piedra:hover { color: #ff0055; box-shadow: 0 0 30px #ff0055; }
+    .btn-papel:hover { color: #00ebff; box-shadow: 0 0 30px #00ebff; }
+    .btn-tijera:hover { color: #ffdd00; box-shadow: 0 0 30px #ffdd00; }
+
+    /* 6. Animación de parpadeo (Blinking) estilo Casino */
+    @keyframes parpadear {
+        0%, 100% { opacity: 1; text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+        50% { opacity: 0.5; text-shadow: none; }
+    }
+
+    /* Aplicamos la animación a los iconos de los botones */
+    .btn span {
+        display: inline-block;
+        animation: parpadear 1s infinite; /* Parpadea cada segundo infinitamente */
+    }
+
+    /* 7. Contenedor de resultados moderno */
+    #resultado { 
+        margin: 50px auto;
+        padding: 30px;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px); /* Efecto de cristal esmerilado */
+        font-size: 28px; 
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+</style>
+</head>
+<body>
+    <h1>🎮 Piedra, Papel o Tijera</h1>
+    <p>¡Hagan sus apuestas! Elige tu movimiento:</p>
+    
+    <div class="button-container">
+        <button class="btn btn-piedra" onclick="jugar('piedra')">
+            <span>🪨</span> Piedra
+        </button>
+        
+        <button class="btn btn-papel" onclick="jugar('papel')">
+            <span>📄</span> Papel
+        </button>
+        
+        <button class="btn btn-tijera" onclick="jugar('tijera')">
+            <span>✂️</span> Tijera
+        </button>
+    </div>
+
+    <div id="resultado">
+        ¡Que comience el juego!
+    </div>
+
+    <script>
+        function jugar(eleccion) {
+            // ... (tu función jugar sin cambios)
+            // ... (recuerda mantener la lógica de fetch y actualización de #resultado)
+            fetch('/jugar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ eleccion: eleccion })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Actualizamos el resultado con un formato más limpio
+                document.getElementById('resultado').innerHTML = 
+                    `Tú elegiste: <strong>${data.usuario}</strong><br>` +
+                    `La PC eligió: <strong>${data.computadora}</strong><br>` +
+                    `<span style="font-size: 1.2em; color: #ffdd00;">${data.resultado}</span>`;
+            });
+        }
+    </script>
+</body>
+</html>
